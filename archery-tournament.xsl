@@ -11,7 +11,7 @@
 				<h2>Scorecards Overview</h2>
 				<ol>
 					<xsl:for-each select="scorecard">
-						<li><a href="#{generate-id()}"><xsl:value-of select="id(@athlete-id)/lastname/text()"/><xsl:value-of select="id(@athlete-id)/firstname/text()"/></a></li>
+						<li><a href="#{generate-id()}"><xsl:value-of select="id(@athlete-id)/lastname/text()"/>&#160;<xsl:value-of select="id(@athlete-id)/firstname/text()"/></a></li>
 					</xsl:for-each>
 				</ol>
 
@@ -22,8 +22,16 @@
 				</ul>
 
 				<hr/>
+				<h2>List of Groups</h2>
+				<ul>
+					<xsl:apply-templates select="group"/>
+				</ul>
+
+				<hr/>
 				<h2>Scorecards</h2>
-				<xsl:apply-templates select="scorecard"/>
+				<ul>
+					<xsl:apply-templates select="scorecard"/>
+				</ul>
 
 				
 			</body>
@@ -36,15 +44,25 @@
 		<li><tt><xsl:value-of select="nationality"/></tt>: <xsl:value-of select="lastname"/>, <xsl:value-of select="firstname"/></li>
 	</xsl:template>
 
+	<!-- groups auflisten -->
+	<xsl:template match="group">
+		<li style="font-weight: bold"><xsl:value-of select="@name"/></li>
+		<ul>
+			<xsl:for-each select="member">
+				<li><xsl:value-of select="id(@athlete-id)/lastname/text()"/>&#160;<xsl:value-of select="id(@athlete-id)/firstname/text()"/></li>
+			</xsl:for-each>
+		</ul>
+	</xsl:template>
+
 	<!-- Scorecard template -->
 	<xsl:template match="scorecard">
-		<p id="{generate-id()}"><xsl:value-of select="id(@athlete-id)/lastname"/>, <xsl:value-of select="id(@athlete-id)/firstname"/></p>
-		<table bgcolor="000000">
+		<li id="{generate-id()}"><xsl:value-of select="id(@athlete-id)/lastname"/>, <xsl:value-of select="id(@athlete-id)/firstname"/></li>
+		<table style="margin-bottom:10pt; width: 100px; border: 1px solid black; border-collapse: collapse">
 			<xsl:for-each select="target">
-				<tr bgcolor="ffffff">
-					<td bgcolor="ffffff"><xsl:value-of select="@name"/></td>
+				<tr style="border: 1px solid black; border-collapse: collapse">
+					<td style="border: 1px solid black; text-align: right"><xsl:value-of select="@name"/></td>
 					<xsl:for-each select="score">
-						<td bgcolor="ffffff"><xsl:value-of select="./text()"/></td>
+						<td style="border: 1px solid black; border-collapse: collapse; text-align: center"><xsl:value-of select="./text()"/></td>
 					</xsl:for-each>
 				</tr>
 			</xsl:for-each>

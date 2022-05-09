@@ -16,15 +16,6 @@
 	<division id="d4">English Longbow</division>
 	<division id="d5">Compound Flight Bow</division>
 	<division id="d6">Foot Bow</division>
-	
-	<!-- 
-	<shooting-style>Barebow - Recurve and Compound</shooting-style>
-	<shooting-style>Freestyle Unlimited</shooting-style>
-	<shooting-style>Freestyle Limited - Recurve and Compound</shooting-style>
-	<shooting-style>Bowhunter - Recurve and Compound</shooting-style>
-	<shooting-style>Bowhunter Unlimited</shooting-style>
-	<shooting-style></shooting-style>
-	 -->
 	 
 	<athlete id="A0">
 		<lastname>Messner</lastname>
