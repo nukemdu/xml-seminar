@@ -47,35 +47,80 @@
                 </fo:flow>
             </fo:page-sequence>
             
+            <fo:page-sequence master-reference="tournament-page">
+                <fo:flow flow-name="xsl-region-body" font-family="Times" font-size="10pt">
+                    <fo:block font-weight="bold" margin-top="40mm" font-size="20pt">Scorecards</fo:block>
+                    <xsl:apply-templates select="scorecard"/>
+                </fo:flow>
+            </fo:page-sequence>
+            
         </fo:root>
     </xsl:template>
 
-
     <xsl:template match="athlete" mode="toc">
 		<fo:table-row>
-			<table-cell>
+			<fo:table-cell>
 				<fo:block>
 					<xsl:value-of select="position()"/>
 				</fo:block>
-			</table-cell>
+			</fo:table-cell>
 
-			<table-cell>
+			<fo:table-cell>
 				<fo:block font-family="monospace">
 					<xsl:value-of select="nationality"/>
 				</fo:block>
-			</table-cell>
+			</fo:table-cell>
 
-			<table-cell>
+			<fo:table-cell>
 				<fo:block>
 					<xsl:value-of select="lastname"/>&#160;
 					<xsl:value-of select="firstname"/>
 				</fo:block>
-			</table-cell>
-
-			<!-- <fo:leader leader-pattern="dots"></fo:leader>  -->
-			<!-- <fo:page-number-citation ref-id="{generate-id()}"/> -->
-
+			</fo:table-cell>
 		</fo:table-row>
 	</xsl:template>
+    
+    <xsl:template match="scorecard">
+        <fo:list-block keep-together="always" provisional-distance-between-starts="18pt" margin-bottom="10pt">
+            <fo:list-item>
+                <!-- Point -->
+                <fo:list-item-label end-indent="10pt">
+                    <fo:block>&#x2022;</fo:block>
+                </fo:list-item-label>
+                <!-- Body -->
+                <fo:list-item-body start-indent="10pt">
+                    <!-- Name -->
+                    <fo:block>
+                        <xsl:value-of select="id(@athlete-id)/lastname"/>, <xsl:value-of select="id(@athlete-id)/firstname"/>
+                    </fo:block>
+                    <!-- Table -->
+                    <fo:table>
+                        <fo:table-column column-width="42pt"/>
+                        <fo:table-column column-width="42pt" number-columns-repeated="3"/>
+                        <fo:table-body start-indent="-3pt">
+                            <xsl:for-each select="target">
+                                <fo:table-row>
+                                    <!-- Target -->
+                                    <fo:table-cell border="1pt solid black" text-align="center" background-color="#D9D9D9">
+                                        <fo:block>
+                                            <xsl:value-of select="@name"/>
+                                        </fo:block>
+                                    </fo:table-cell>
+                                    <xsl:for-each select="score">
+                                        <fo:table-cell border="1pt solid black" text-align="center">
+                                            <fo:block>
+                                                    <xsl:value-of select="./text()"/>
+                                            </fo:block>
+                                        </fo:table-cell>
+                                    </xsl:for-each>
+                                </fo:table-row>
+                            </xsl:for-each>
+                            <xsl:apply-templates select="scorecard"/>
+                        </fo:table-body>
+                    </fo:table>
+                </fo:list-item-body>
+            </fo:list-item>
+        </fo:list-block>
+    </xsl:template>
 
 </xsl:stylesheet>
