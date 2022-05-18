@@ -40,6 +40,10 @@
                 <fo:flow flow-name="xsl-region-body" font-family="Times" font-size="9pt">
                     <fo:block font-weight="bold" margin-top="40mm">Table of Contents</fo:block>
 					<fo:table>
+						<fo:table-column column-width="5mm"/>
+						<fo:table-column column-width="7mm"/>
+						<fo:table-column column-width="160mm"/>
+
 						<fo:table-body>
 							<xsl:apply-templates select="athlete" mode="toc"/>
 						</fo:table-body>
@@ -53,27 +57,29 @@
 
     <xsl:template match="athlete" mode="toc">
 		<fo:table-row>
-			<table-cell>
-				<fo:block>
-					<xsl:value-of select="position()"/>
+			<fo:table-cell>
+				<fo:block text-align="right">
+					<xsl:value-of select="position()"/>&#160;
 				</fo:block>
-			</table-cell>
+			</fo:table-cell>
 
-			<table-cell>
+			<fo:table-cell>
 				<fo:block font-family="monospace">
 					<xsl:value-of select="nationality"/>
 				</fo:block>
-			</table-cell>
+			</fo:table-cell>
 
-			<table-cell>
+			<fo:table-cell>
 				<fo:block>
 					<xsl:value-of select="lastname"/>&#160;
 					<xsl:value-of select="firstname"/>
+					<fo:inline>
+						<fo:leader width="100%" leader-pattern="dots"/>
+					</fo:inline>
+					<!-- <fo:page-number-citation ref-id="{generate-id()}"/> -->
+					test
 				</fo:block>
-			</table-cell>
-
-			<!-- <fo:leader leader-pattern="dots"></fo:leader>  -->
-			<!-- <fo:page-number-citation ref-id="{generate-id()}"/> -->
+			</fo:table-cell>
 
 		</fo:table-row>
 	</xsl:template>
