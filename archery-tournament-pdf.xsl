@@ -38,6 +38,7 @@
                 <!-- place a page description into the page header -->
                 
                 <!-- place the table of contents into region-body -->
+<<<<<<< HEAD
                 <fo:flow flow-name="xsl-region-body" font-family="Times" font-size="9pt">
                     <fo:block font-weight="bold" margin-top="40mm">Table of Contents</fo:block>
 <<<<<<< HEAD
@@ -51,7 +52,16 @@
 						</fo:table-body>
 					</fo:table>
 =======
+=======
+                <fo:flow flow-name="xsl-region-body" font-family="Times" font-size="10pt">
+                    <fo:block font-weight="bold" margin-top="40mm" font-size="20pt">Table of Contents</fo:block>
+>>>>>>> noah
                     <fo:table>
+                        <fo:table-column column-width="5mm"/>
+                        <fo:table-column column-width="7mm"/>
+                        <fo:table-column column-width="150mm"/>
+                        <fo:table-column column-width="8mm"/>
+                        
                         <fo:table-body>
                             <xsl:apply-templates select="athlete" mode="toc"/>
                         </fo:table-body>
@@ -66,6 +76,16 @@
 >>>>>>> origin/noah
                 </fo:flow>
             </fo:page-sequence>
+            
+            <xsl:for-each select="athlete">
+                <fo:page-sequence master-reference="tournament-page">
+                    <fo:flow flow-name="xsl-region-body">
+                        <fo:block>
+                            <xsl:value-of select="firstname"/>
+                        </fo:block>
+                    </fo:flow>
+                </fo:page-sequence>
+            </xsl:for-each>
             
         </fo:root>
     </xsl:template>
@@ -103,28 +123,40 @@
 =======
         <fo:table-row>
             <fo:table-cell>
-                <fo:block>
-                    <xsl:value-of select="position()"/>
+                <fo:block text-align="right">
+                    <xsl:value-of select="position()"/>&#160;
                 </fo:block>
             </fo:table-cell>
             
             <fo:table-cell>
                 <fo:block font-family="monospace">
-                    <xsl:value-of select="nationality"/>
+                    <fo:basic-link internal-destination="{generate-id(firstname)}">
+                        <xsl:value-of select="nationality"/>
+                    </fo:basic-link>
                 </fo:block>
             </fo:table-cell>
             
             <fo:table-cell>
-                <fo:block>
-                    <xsl:value-of select="lastname"/>&#160;
-                    <xsl:value-of select="firstname"/>
+                <fo:block text-align-last="justify">
+                    <fo:basic-link internal-destination="{generate-id(firstname)}">
+                        <xsl:value-of select="lastname"/>&#160;<xsl:value-of select="firstname"/>&#160;
+                        <fo:leader leader-pattern="dots" width="100%"/>
+                    </fo:basic-link>
+                </fo:block>
+            </fo:table-cell>
+            
+            <fo:table-cell>
+                <fo:block text-align-last="justify">
+                    <fo:basic-link internal-destination="{generate-id(firstname)}">
+                        <fo:page-number-citation ref-id="{generate-id(firstname)}"/>
+                    </fo:basic-link>
                 </fo:block>
             </fo:table-cell>
         </fo:table-row>
     </xsl:template>
     
     <xsl:template match="scorecard">
-        <fo:list-block keep-together="always" provisional-distance-between-starts="18pt" margin-bottom="10pt">
+        <fo:list-block keep-together="always" provisional-distance-between-starts="18pt" margin-bottom="10pt" id="{generate-id(.)})">
             <fo:list-item>
                 <!-- Point -->
                 <fo:list-item-label end-indent="10pt">
@@ -133,8 +165,9 @@
                 <!-- Body -->
                 <fo:list-item-body start-indent="10pt">
                     <!-- Name -->
-                    <fo:block>
-                        <xsl:value-of select="id(@athlete-id)/lastname"/>, <xsl:value-of select="id(@athlete-id)/firstname"/>
+                    <fo:block id="{generate-id(id(@athlete-id)/firstname)}">
+                        <xsl:value-of select="id(@athlete-id)/lastname"/>&#160;
+                        <xsl:value-of select="id(@athlete-id)/firstname"/>
                     </fo:block>
                     <!-- Table -->
                     <fo:table>
