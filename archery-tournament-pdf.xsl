@@ -34,6 +34,7 @@
                 </fo:flow>
             </fo:page-sequence>
             
+            <!-- table of contents (list of athletes) page -->
             <fo:page-sequence master-reference="tournament-page">
                 <!-- place a page description into the page header -->
                 
@@ -53,24 +54,35 @@
                 </fo:flow>
             </fo:page-sequence>
             
+            <!-- groups page -->
             <fo:page-sequence master-reference="tournament-page">
                 <fo:flow flow-name="xsl-region-body" font-family="Times" font-size="10pt">
-                    <fo:block font-weight="bold" margin-top="40mm" font-size="20pt">Scorecards</fo:block>
-                    <xsl:apply-templates select="scorecard"/>
+                    <fo:block font-weight="bold" margin-top="20mm" font-size="20pt">List of Groups</fo:block>
+                    <xsl:apply-templates select="group"/>
                 </fo:flow>
             </fo:page-sequence>
             
+            <!-- scorecards page -->
+            <fo:page-sequence master-reference="tournament-page">
+                <fo:flow flow-name="xsl-region-body" font-family="Times" font-size="10pt">
+                    <fo:block font-weight="bold" margin-top="20mm" font-size="20pt">Scorecards</fo:block>
+                    <xsl:apply-templates select="scorecard"/>
+                </fo:flow>
+            </fo:page-sequence>
         </fo:root>
     </xsl:template>
     
+    <!-- Athlete template -->
     <xsl:template match="athlete" mode="toc">
         <fo:table-row>
+            <!-- dot -->
             <fo:table-cell>
                 <fo:block text-align="right">
                     <xsl:value-of select="position()"/>&#160;
                 </fo:block>
             </fo:table-cell>
             
+            <!-- Nationality -->
             <fo:table-cell>
                 <fo:block font-family="monospace">
                     <fo:basic-link internal-destination="{generate-id(firstname)}">
@@ -79,6 +91,7 @@
                 </fo:block>
             </fo:table-cell>
             
+            <!-- Lastname + Firstname -->
             <fo:table-cell>
                 <fo:block text-align-last="justify">
                     <fo:basic-link internal-destination="{generate-id(firstname)}">
@@ -88,6 +101,7 @@
                 </fo:block>
             </fo:table-cell>
             
+            <!-- page number -->
             <fo:table-cell>
                 <fo:block text-align-last="justify">
                     <fo:basic-link internal-destination="{generate-id(firstname)}">
@@ -97,7 +111,45 @@
             </fo:table-cell>
         </fo:table-row>
     </xsl:template>
+  
+    <!-- Group template -->
+    <xsl:template match="group">
+        <fo:list-block keep-together="always" provisional-distance-between-starts="18pt" margin-bottom="10pt">
+            <fo:list-item>
+                <!-- Point -->
+                <fo:list-item-label end-indent="10pt">
+                    <fo:block>&#x2022;</fo:block>
+                </fo:list-item-label>
+                <fo:list-item-body start-indent="10pt">
+                    <!-- Name -->
+                    <fo:block font-weight="bold"><xsl:value-of select="@name"/></fo:block>
+                    
+                    <fo:list-block keep-together="always" provisional-distance-between-starts="18pt">
+                        <xsl:apply-templates select="member"/>
+                        
+                    </fo:list-block>
+                </fo:list-item-body>
+            </fo:list-item>
+        </fo:list-block>
+    </xsl:template>
     
+    <!-- athlete template for the list of groups -->  
+    <xsl:template match="member">
+        <fo:list-item>
+            <!-- Point -->
+            <fo:list-item-label end-indent="10pt">
+                <fo:block>-</fo:block>
+            </fo:list-item-label>
+            <fo:list-item-body start-indent="15pt">
+                <fo:block>
+                    <xsl:value-of select="id(@athlete-id)/lastname"/>&#160;
+                    <xsl:value-of select="id(@athlete-id)/firstname"/>
+                </fo:block>
+            </fo:list-item-body>
+        </fo:list-item>
+    </xsl:template>
+    
+    <!-- Scorecard template -->  
     <xsl:template match="scorecard">
         <fo:list-block keep-together="always" provisional-distance-between-starts="18pt" margin-bottom="10pt" id="{generate-id(.)})">
             <fo:list-item>
